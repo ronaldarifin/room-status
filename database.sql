@@ -22,4 +22,7 @@ CREATE TABLE notification(
    toRoom int
 );
 
-insert into rooms (roomnumber,roomstatus,groupid) values(321,0,11);
+insert into rooms (roomnumber,roomstatus,groupid) values(321,False,11);
+insert into rooms (roomnumber,roomstatus,groupid) values(516,False,11);
+insert into rooms (roomnumber,roomstatus,groupid) values(221,False,13);
+
