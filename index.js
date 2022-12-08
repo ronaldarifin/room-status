@@ -12,23 +12,29 @@ app.use(express.json());
 app.get("/", (req, res) => {res.json("hello")})
 //ROUTES
 //create a todo
-app.post("/todos", async(req, res) => {
-   try {
-      //destructuring syntax
-      const {description} = req.body;
-      // way 1
-      // const sqlc = "insert into todo (description) values($1) returning *"
-      // const newTodo = await pool.query(sqlc,[description])
-      //way 2
-      // way 1 is easier.
-      const sqlc = `insert into todo (description) values('${description}') returning *`;
-      const newTodo = await pool.query(sqlc);
-      //res.json sends a json response
-      res.json(newTodo.rows[0])
-   } catch (err) {
-      console.error(err.message);
-   }
-})
+// app.post("/register", async(req, res) => {
+//    JSON
+//    {
+//       roomNumber
+//       roomStatus
+//       groupid
+//    }
+//    try {
+//       //destructuring syntax
+//       const {roomnumber, roomstatus, groupid} = req.body;
+//       // way 1
+//       // const sqlc = "insert into todo (description) values($1) returning *"
+//       // const newTodo = await pool.query(sqlc,[description])
+//       //way 2
+//       // way 1 is easier.
+//       const sqlc = "insert into rooms (roomnumber,roomstatus,groupid) values($1,$2,$3) returning *";
+//       const newTodo = await pool.query(sqlc,[]);
+//       //res.json sends a json response
+//       res.json(newTodo.rows[0])
+//    } catch (err) {
+//       console.error(err.message);
+//    }
+// })
 
 // // get all todos
 app.get("/todos", async(req, res) => {
@@ -54,18 +60,18 @@ app.get("/todos", async(req, res) => {
 //    }
 // });
 
-// // update a todo
-// app.put("/todos/:id", async (req, res) => {
-//    try{
-//       const {id} = req.params;
-//       const {description} = req.body;
-//       const sqlc = "update todo set description = $1 where todo_id = $2";
-//       const updateToDo = await pool.query(sqlc,[description,id]);
-//       res.json("Todo List updated")
-//    }catch (err) {
-//       console.error(err.message);
-//    }
-// });
+// update a todo
+app.put("/updateStatus/:roomNumber/:roomStatus", async (req, res) => {
+   try{
+      const {roomNumber,roomStatus} = req.params;
+      // const {roomStatus} = req.body;
+      const sqlc = "update rooms set roomStatus = $1 where roomNumber = $2";
+      const updateToDo = await pool.query(sqlc,[roomStatus,roomNumber]);
+      res.json("Room Updated")
+   }catch (err) {
+      console.error(err.message);
+   }
+});
 
 // // delete a todo
 
