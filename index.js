@@ -36,12 +36,17 @@ app.get("/", (req, res) => {res.json("hello")})
 //    }
 // })
 
-// // get all todos
-app.get("/todos", async(req, res) => {
+// // get rooms
+app.get("/rooms/:groupId", async(req, res) => {
    try {
-      const sqlc = "select * from todo"
-      const toDoList = await pool.query(sqlc);
-      res.json(toDoList.rows);
+      const {groupId} = req.params;
+      const sqlc = "SELECT roomnumber,roomstatus FROM rooms WHERE groupid = $1";
+      const getRooms = await pool.query(sqlc, [groupId]);
+
+      res.json({
+         'Room Number' : roomnumber,
+         'Status' : roomstatus
+      });
 
    } catch (err) {
       console.error(err.message)
