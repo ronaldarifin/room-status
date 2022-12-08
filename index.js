@@ -43,7 +43,7 @@ app.get("/rooms/:groupId", async(req, res) => {
       const sqlc = "SELECT roomnumber,roomstatus FROM rooms WHERE groupid = $1";
       const getRooms = await pool.query(sqlc, [groupId]);
 
-      res.json(getRooms.rows[0]);
+      res.json(getRooms.rows);
 
    } catch (err) {
       console.error(err.message)
