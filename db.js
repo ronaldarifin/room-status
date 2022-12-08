@@ -12,11 +12,11 @@
 const Pool = require('pg').Pool;
 
 const pool = new Pool({
-   user: "pern_todo_list_user",
-   password: "KEZLZ6dl4ovpDmvvz4vjHpn1ZZ4oZ9FV",
-   host: "dpg-ce17da82i3mkuceitnlg-a",
+   user: "room_status_db_user",
+   password: "E859GVjs389UEy5pSgUqh7Gg0n33RjKQ",
+   host: "dpg-ce8n5a6n6mposnkvtqh0-a",
    port: 5432,
-   database: "pern_todo_list"
+   database: "room_status_db"
 });
 
 module.exports = pool
