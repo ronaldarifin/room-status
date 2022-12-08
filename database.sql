@@ -9,11 +9,11 @@ CREATE TABLE todo(
 )
 -- \c dbname -> to access the database in psql\
 
-CREATE TABLE todo(
+CREATE TABLE rooms(
    uuid SERIAL PRIMARY KEY,
-   roomNumber INT(255),
+   roomNumber INT,
    roomStatus BOOL,
-   groupid INT(255)
+   groupid INT
 );
 
 
@@ -21,3 +21,5 @@ CREATE TABLE notification(
    fromRoom int,
    toRoom int
 );
+
+insert into rooms (roomnumber,roomstatus,groupid) values(321,0,11);
