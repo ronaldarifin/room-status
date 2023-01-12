@@ -3,13 +3,13 @@ const app = express();
 const cors = require('cors');
 const pool = require("./db.js")
 
-//middleware
-//handles cross requests
 app.use(cors())
-//line to convert body to json: it used to be body parser but now it's integrated
 app.use(express.json());
 
-app.get("/", (req, res) => {res.json("hello")})
+app.get("/", async(req, res) => {
+   res.json("hello")
+
+})
 //ROUTES
 //create a todo
 // app.post("/register", async(req, res) => {
@@ -50,19 +50,7 @@ app.get("/rooms/:groupId", async(req, res) => {
    }
 })
 
-// //get a todo
-// app.get("/todos/:id", async (req, res) => {
-//    try{
-//       const {id} = req.params;
-//       const sqlc = "select * from todo where todo_id = $1";
-//       const toDo = await pool.query(sqlc,[id])
-//       res.json(getToDo.rows[0])
-//    }catch (err) {
-//       console.error(err.message);
-//    }
-// });
-
-// update a todo
+// updates current room status
 app.put("/updateStatus/:roomNumber/:roomStatus", async (req, res) => {
    try{
       const {roomNumber,roomStatus} = req.params;
@@ -75,19 +63,48 @@ app.put("/updateStatus/:roomNumber/:roomStatus", async (req, res) => {
    }
 });
 
-// // delete a todo
+// This get implementation works, however, it's not the best way
+app.get("/ping/:fromRoom/:toRoom", async (req,res) => {
+   try{
+      const {fromRoom, toRoom} = req.params
+      const sqlc = "insert into notification (fromroom,toroom) values($1,$2)"
+      const pingMsg = await pool.query(sqlc,[fromRoom,toRoom]);
+      res.json("Insert Successful")
+   }catch (err) {
+      console.error(err.message)
+   }
+});
 
-// app.delete("/todos/:id", async (req, res) => {
+app.get("/hehe/", async(req,res) => {
+   try{
+      // const {currentRoom} = req.params
+      const sqlc = "select * from notification where is_read = false";
+      const notification = await pool.query(sqlc);
+      res.json(notification.rows)
+   }catch(err){
+      console.error(err.message)
+   }
+});
+
+
+// app.post("/todos", async(req, res) => {
 //    try {
-//       const {id} = req.params;
-//       const deleteTodo = await pool.query(
-//          "DELETE FROM todo WHERE todo_id = $1", [id]
-//       );
-//       res. json(" Todo was deleted!");
-//    }catch (err) {
-//       console.log(err.message);
+//       //destructuring syntax
+//       const {description} = req.body;
+//       // way 1
+//       // const sqlc = "insert into todo (description) values($1) returning *"
+//       // const newTodo = await pool.query(sqlc,[description])
+//       //way 2
+//       // way 1 is easier.
+//       const sqlc = `insert into todo (description) values('${description}') returning *`;
+//       const newTodo = await pool.query(sqlc);
+//       //res.json sends a json response
+//       res.json(newTodo.rows[0])
+//    } catch (err) {
+//       console.error(err.message);
 //    }
-// });
+// })
+
 
 app.listen(3000, () => {
    console.log("server has started on port 3000")
