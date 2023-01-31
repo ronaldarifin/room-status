@@ -63,7 +63,22 @@ app.put("/updateStatus/:roomNumber/:roomStatus", async (req, res) => {
    }
 });
 
-// This get implementation works, however, it's not the best way
+// 
+app.get("/notification/:toRoom", async(req,res) => {
+   try{
+      const {toRoom} = req.params
+      // res.json(toRoom)
+      // console.log(toRoom)
+      const sqlc = "select * from notification where is_read = false and toroom = $1";
+      const notification = await pool.query(sqlc,[toRoom]);
+      // console.log(notification)
+      res.json(notification.rows)
+   }catch(err){
+      console.error(err.message)
+   }
+});
+
+// This implementation is for from room and to rooms
 app.get("/ping/:fromRoom/:toRoom", async (req,res) => {
    try{
       const {fromRoom, toRoom} = req.params
@@ -75,16 +90,6 @@ app.get("/ping/:fromRoom/:toRoom", async (req,res) => {
    }
 });
 
-app.get("/hehe/", async(req,res) => {
-   try{
-      // const {currentRoom} = req.params
-      const sqlc = "select * from notification where is_read = false";
-      const notification = await pool.query(sqlc);
-      res.json(notification.rows)
-   }catch(err){
-      console.error(err.message)
-   }
-});
 
 
 // app.post("/todos", async(req, res) => {
